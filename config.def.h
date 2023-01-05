@@ -98,8 +98,8 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,		    XK_comma,       cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period,      cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_t,           setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,           setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,           setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,             XK_z,           setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_z,           setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_u,           setlayout,      {.v = &layouts[3]} },
 	{ MODKEY|ShiftMask,             XK_u,           setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_i,           setlayout,      {.v = &layouts[5]} },
@@ -127,6 +127,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
 };
 
 /* button definitions */
