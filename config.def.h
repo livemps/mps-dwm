@@ -68,6 +68,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "rofi", "-modi", "window,run,drun,ssh", "-show", "drun", "-show-icons", "-font", "'JetBrainsMono Nerd Font 14'", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
 #include "shift-tools.c"
+#include "movestack.c"
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -78,12 +79,14 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,           togglebar,      {0} },
 	{ MODKEY,                       XK_j,           focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,           focusstack,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_j,           movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,           movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_o,           incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_p,           incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,           setmfact,       {.f = -0.02} },
-	{ MODKEY,                       XK_l,           setmfact,       {.f = +0.02} },
-	{ MODKEY|ShiftMask,             XK_h,           setsmfact,      {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_l,           setsmfact,      {.f = -0.05} },
+	{ MODKEY,                       XK_h,           setmfact,       {.f = +0.02} },
+	{ MODKEY,                       XK_l,           setmfact,       {.f = -0.02} },
+	{ MODKEY|ShiftMask,             XK_h,           setsmfact,      {.f = -0.02} },
+	{ MODKEY|ShiftMask,             XK_l,           setsmfact,      {.f = +0.02} },
 	{ MODKEY,                       XK_Return,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,         view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,           killclient,     {0} },
