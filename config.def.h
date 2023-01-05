@@ -80,6 +80,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "rofi", "-modi", "window,run,drun,ssh", "-show", "drun", "-show-icons", "-font", "'JetBrainsMono Nerd Font 14'", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
+static const char *layoutmenu_cmd = "layoutmenu.sh";
 #include "shift-tools.c"
 #include "movestack.c"
 
@@ -101,7 +102,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_h,           setsmfact,      {.f = -0.02} },
 	{ MODKEY|ShiftMask,             XK_l,           setsmfact,      {.f = +0.02} },
 	{ MODKEY,                       XK_Return,      zoom,           {0} },
-	{ MODKEY,                       XK_q,         view,           {0} },
+	{ MODKEY,                       XK_q,           view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,           killclient,     {0} },
 	{ MODKEY|ControlMask,		    XK_comma,       cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period,      cyclelayout,    {.i = +1 } },
@@ -154,5 +155,9 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkLtSymbol,          0,              Button1,        layoutmenu,     {0} },
+ 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+
 };
 
