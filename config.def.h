@@ -20,8 +20,8 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
 static const int topbar             = 1;     /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=9" };
+static const char dmenufont[]       = "JetBrainsMono Nerd Font:size=9";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -44,6 +44,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+    { "Tilda",    NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -78,21 +79,24 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "rofi", "-modi", "window,run,drun,ssh", "-show", "drun", "-show-icons", "-font", "'JetBrainsMono Nerd Font 14'", NULL };
+static const char *layoutmenu_cmd = "/home/user/mps/snippets/rofi-boot-dwmswitch.sh";
+static const char *dmenucmd[] = { "/home/user/mps/snippets/rofi-boot-launcher.sh", NULL };
+static const char *powermenu_cmd[] = {"/home/user/mps/snippets/rofi-boot-powermenu.sh", NULL};
 static const char *termcmd[]  = { "kitty", NULL };
-static const char *layoutmenu_cmd = "layoutmenu.sh";
 #include "shift-tools.c"
 #include "movestack.c"
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY|ControlMask,           XK_Left,        shiftview,     { .i = +1 } },
-	{ MODKEY|ControlMask,           XK_Right,       shiftview,     { .i = -1 } },
+	{ MODKEY|ControlMask,           XK_Left,        shiftview,      { .i = +1 } },
+	{ MODKEY|ControlMask,           XK_Right,       shiftview,      { .i = -1 } },
 	{ MODKEY,                       XK_d,           spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,           togglebar,      {0} },
 	{ MODKEY,                       XK_j,           focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,           focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_Left,        focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_Right,       focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_j,           movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,           movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_o,           incnmaster,     {.i = +1 } },
@@ -106,6 +110,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,           killclient,     {0} },
 	{ MODKEY|ControlMask,		    XK_comma,       cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period,      cyclelayout,    {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_t,           layoutmenu,     {0} },
 	{ MODKEY,                       XK_t,           setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_z,           setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_z,           setlayout,      {.v = &layouts[2]} },
@@ -127,6 +132,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_numbersign,  setgaps,        {.i = GAP_RESET } },
 	{ MODKEY,                       XK_numbersign,  setgaps,        {.i = GAP_TOGGLE} },
 	{ Mod1Mask,             		XK_Tab,         altTabStart,	{0} },
+	{ MODKEY|ShiftMask,             XK_q,           quit,           {0} },
+	{ MODKEY|ControlMask|ShiftMask, XK_q,           quit,           {1} }, 
+	{ MODKEY|ShiftMask,             XK_Delete,      spawn,          { .v = powermenu_cmd} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -136,8 +144,6 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
 };
 
 /* button definitions */
@@ -156,7 +162,7 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkLtSymbol,          0,              Button1,        layoutmenu,     {0} },
- 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+ 	{ ClkLtSymbol,          0,              Button2,        setlayout,      {.v = &layouts[0]} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 
 };
